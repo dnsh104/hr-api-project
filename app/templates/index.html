@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Background Check Dashboard — Regent College London</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>HR Background Check Dashboard</h1>
+    <p>Regent College London</p>
+</header>
+
+<div class="container">
+
+    <!-- FORM -->
+    <div class="form-box">
+        <h2>Add New Request</h2>
+        <form action="/add" method="post">
+            <input type="text" name="employee_name" placeholder="Employee Name" required>
+            <select name="check_type">
+                <option value="DBS">DBS</option>
+                <option value="Credit">Credit</option>
+                <option value="Bank">Bank</option>
+                <option value="Home Office">Home Office</option>
+            </select>
+            <button type="submit">Add Request</button>
+        </form>
+    </div>
+
+    <!-- SUMMARY CARDS -->
+    <div class="cards">
+        <div class="card pending">
+            <h3>Pending</h3>
+            <p>{{ pending }}</p>
+        </div>
+        <div class="card in-progress">
+            <h3>In Progress</h3>
+            <p>{{ in_progress }}</p>
+        </div>
+        <div class="card completed">
+            <h3>Completed</h3>
+            <p>{{ completed }}</p>
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Employee Name</th>
+                <th>Check Type</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in requests %}
+            <tr>
+                <td>{{ r.id }}</td>
+                <td>{{ r.employee_name }}</td>
+                <td>{{ r.check_type }}</td>
+                <td>
+                    <span class="badge badge-{{ r.status | lower | replace(' ', '-') }}">
+                        {{ r.status }}
+                    </span>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4" style="text-align:center; color:#888;">No requests yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>
